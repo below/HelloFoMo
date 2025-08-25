@@ -6,12 +6,20 @@
 //
 
 import SwiftUI
+import FoundationModels
 
 @main
 struct HelloFoMoApp: App {
+    let model = SystemLanguageModel(guardrails: .permissiveContentTransformations)
+
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            if case .available = model.availability {
+                ContentView(session: LanguageModelSession(model: model))
+            } else {
+                Text("Apple Intelligence is not available.")
+                    .foregroundStyle(Color.red)
+            }
         }
     }
 }
